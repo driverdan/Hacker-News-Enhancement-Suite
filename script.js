@@ -42,6 +42,7 @@
     $(".pagetop a").click(function(e) {
       $.get(this.href, function(data) {
         $(".main").html($("table tr:eq(4) td:eq(0) tr", data));
+        $content.empty();
       });
       return false;
     });
