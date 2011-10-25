@@ -1,11 +1,16 @@
 .selected {
-  background:#ffec8b;
+  background: #ffec8b;
 }
 
 .title a:visited {
-  background:#ffe4cf;
+  background: #ffe4cf;
 }
 
 #content {
   margin: 0 10px;
+}
+
+.main {
+  width: "30%";
+  float:"left";
 }

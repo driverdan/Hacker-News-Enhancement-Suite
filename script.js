@@ -6,12 +6,14 @@
 
   el.addEventListener("load", function() {
     var $ = jQuery.noConflict(true)
+      // This is the main content section of the site
       , $main = $("table tr:eq(4) td:eq(0)")
+      // Used for right hand content div
       , $content;
 
     // Setup layout and append content div
     $("table", $main)
-    .css({width:"30%",float:"left"})
+    .addClass("main")
     .parent().append('<div id="content">');
 
     $content = $("#content");
