@@ -1,10 +1,41 @@
+/**
+ * Hacker News Enhancement Suite
+ *
+ * Enhance the HN experience.
+ *
+ * @copyright 2011 passive.ly LLC
+ * @license   MIT
+ * @author    Dan DeFelippi <dan at driver dan dot com>
+ */
+
 (function(doc, undef) {
-  var baseUrl = "https://raw.github.com/driverdan/Hacker-News-Enhancement-Suite/master/"
+  // hnes is the app's namespace
+  var hnes = {}
     , el = doc.createElement("script");
+
+  // Base URL to HNES files
+  hnes.baseUrl = "https://raw.github.com/driverdan/Hacker-News-Enhancement-Suite/master/"
+
+  // Gets some jQueries
   el.setAttribute("src", "http://code.jquery.com/jquery.js");
+
+  // When jQuery is ready run that shit
+  // If your browser doesn't support addEventListener you shouldn't be reading HN
+  el.addEventListener("load", function() {
+    hnes.load();
+  });
   doc.body.appendChild(el);
 
-  el.addEventListener("load", function() {
+  // Append CSS file
+  el = doc.createElement("link");
+  el.rel = "stylesheet";
+  el.href = hnes.baseUrl + "style.css";
+  doc.head.appendChild(el);
+
+  /**
+   * Initializes hnes
+   */
+  hnes.load = function() {
     var $ = jQuery.noConflict(true)
       // This is the main content section of the site
       , $main = $("table tr:eq(4) td:eq(0)")
@@ -16,6 +47,7 @@
     .addClass("main")
     .parent().append('<div id="content">');
 
+    // Cache the content div
     $content = $("#content");
 
     // Hijack internal clicks
@@ -55,11 +87,11 @@
       }
     })
     .attr("target", "_blank");
-  });
+  };
 
-  // Add CSS
-  el = doc.createElement("link");
-  el.rel = "stylesheet";
-  el.href = baseUrl + "style.css";
-  doc.head.appendChild(el);
+  /**
+   * Action to take when a link is clicked.
+   */
+  hnes.clickedLink = function(e) {
+  };
 })(document);
