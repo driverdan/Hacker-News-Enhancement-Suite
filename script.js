@@ -35,6 +35,8 @@
       });
       return false;
     });
+
+    $("a[href^='http']").attr("target", "_blank");
   });
 
   // Add CSS
