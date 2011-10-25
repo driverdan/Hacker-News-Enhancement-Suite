@@ -38,6 +38,15 @@
       return false;
     });
 
+    // Setup AJAX for top nav
+    $(".pagetop a").click(function(e) {
+      $.get(this.href, function(data) {
+        $(".main").html($("table tr:eq(4) td:eq(0) tr", data));
+      });
+      return false;
+    });
+
+    // Open articles in new tabs and auto open comments
     $("a[href^='http']")
     .click(function(e) {
       if ($(this).parent().hasClass("title")) {
