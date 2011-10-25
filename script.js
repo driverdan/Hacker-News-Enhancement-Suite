@@ -36,62 +36,68 @@
    * Initializes hnes
    */
   hnes.load = function() {
-    var $ = jQuery.noConflict(true)
-      // This is the main content section of the site
-      , $main = $("table tr:eq(4) td:eq(0)")
-      // Used for right hand content div
-      , $content;
+    hnes.$ = jQuery.noConflict(true);
+    // This is the main content section of the site
+    hnes.$main = hnes.$("table tr:eq(4) td:eq(0)");
+    // Used for right hand content div
+    hnes.$content;
 
     // Setup layout and append content div
-    $("table", $main)
+    hnes.$("table", hnes.$main)
     .addClass("main")
     .parent().append('<div id="content">');
 
     // Cache the content div
-    $content = $("#content");
+    hnes.$content = hnes.$("#content");
 
-    // Hijack internal clicks
-    $("a[href^='item']").live("click", function(e) {
-      var $this = $(this)
-        , $topic = $this.parent().parent();
-
-      // Highlight topic when link is clicked
-      $("tr", $main).removeClass("selected");
-
-      if ($this.parent().hasClass('subtext')) {
-        $topic = $topic.prev();
-      }
-      $topic.addClass("selected");
-
-      $content.html('<p>Please wait...</p>');
-      $.get(this.href, function(data) {
-        $content.html($("table tr:eq(4) td:eq(0)", data));
-      });
-      return false;
+    // Intercept all link clicks and process at runtime.
+    // This allows handling changed content without rebinding.
+    hnes.$("a").live("click", function(e) {
+      hnes.clickedLink.call(this, e);
     });
 
-    // Setup AJAX for top nav
-    $(".pagetop a").click(function(e) {
-      $.get(this.href, function(data) {
-        $(".main").html($("table tr:eq(4) td:eq(0) tr", data));
-        $content.empty();
-      });
-      return false;
-    });
-
-    // Open articles in new tabs and auto open comments
-    $("a[href^='http']")
-    .click(function(e) {
-      if ($(this).parent().hasClass("title")) {
-        $(this).parent().parent().next().find(".subtext a:eq(2)").click();
-      }
-    })
-    .attr("target", "_blank");
+    // Open external links in new tabs
+    hnes.$("a[href^='http']").attr("target", "_blank");
   };
 
   /**
    * Action to take when a link is clicked.
    */
   hnes.clickedLink = function(e) {
+    var $this = hnes.$(this)
+      , $topic;
+
+    // Internal content/comment links are loaded to content div
+    if (this.href.indexOf("item") === 0) {
+      $topic = $this.parent().parent();
+
+      // Highlight topic when link is clicked
+      hnes.$("tr", hnes.$main).removeClass("selected");
+
+      if ($this.parent().hasClass('subtext')) {
+        $topic = $topic.prev();
+      }
+      $topic.addClass("selected");
+
+      hnes.$content.html('<p>Please wait...</p>');
+      hnes.$.get(this.href, function(data) {
+        hnes.$content.html(hnes.$("table tr:eq(4) td:eq(0)", data));
+      });
+      return false;
+    }
+
+    // Handle top navigation links
+    if ($this.parent().hasClass("pagetop")) {
+      hnes.$.get(this.href, function(data) {
+        hnes.$(".main").html(hnes.$("table tr:eq(4) td:eq(0) tr", data));
+        hnes.$content.empty();
+      });
+      return false;
+    }
+
+    // Open articles in new tabs and auto open comments
+    if ($this.parent().hasClass("title")) {
+      $this.parent().parent().next().find(".subtext a:eq(2)").click();
+    }
   };
 })(document);
