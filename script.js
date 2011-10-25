@@ -36,7 +36,13 @@
       return false;
     });
 
-    $("a[href^='http']").attr("target", "_blank");
+    $("a[href^='http']")
+    .click(function(e) {
+      if ($(this).parent().hasClass("title")) {
+        $(this).parent().parent().next().find(".subtext a:eq(2)").click();
+      }
+    })
+    .attr("target", "_blank");
   });
 
   // Add CSS
