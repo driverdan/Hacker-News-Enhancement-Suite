@@ -17,7 +17,7 @@
   hnes.baseUrl = "https://raw.github.com/driverdan/Hacker-News-Enhancement-Suite/master/"
 
   // Gets some jQueries
-  el.setAttribute("src", "http://code.jquery.com/jquery.js");
+  el.setAttribute("src", "https://code.jquery.com/jquery.js");
 
   // When jQuery is ready run that shit
   // If your browser doesn't support addEventListener you shouldn't be reading HN
